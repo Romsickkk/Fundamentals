@@ -147,4 +147,6 @@
 // }, 1);
 // clearInterval(timerID);
 
-// ======== setTimeOut ========
+// ======== setTimeOut =======
+if (condition) {
+}
