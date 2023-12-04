@@ -156,33 +156,112 @@
 //   clearInterval(timerID);
 // }, 1000);
 
-//         ================= Practis ==============
-const counterNum = document.querySelector("#counter");
-const startBtn = document.querySelector("#start");
-const pauseBtn = document.querySelector("#pause");
-const resetBtn = document.querySelector("#reset");
-let x = 0;
+// //         ================= Practis ==============
+// const counterNum = document.querySelector("#counter");
+// const startBtn = document.querySelector("#start");
+// const pauseBtn = document.querySelector("#pause");
+// const resetBtn = document.querySelector("#reset");
+// pauseBtn.setAttribute("disabled", "");
+// resetBtn.setAttribute("disabled", "");
+// let x = 0;
 
-startBtn.addEventListener("click", function () {
-  counterNum.textContent = x;
+// startBtn.addEventListener("click", () => {
+//   timerID = setInterval(function () {
+//     counterNum.textContent = `${x++}`;
+//   }, 1000);
+//   startBtn.setAttribute("disabled", "");
+//   pauseBtn.removeAttribute("disabled");
+//   resetBtn.removeAttribute("disabled");
+// });
 
-  timerID = setInterval(function () {
-    () => {
-      x++;
-    };
-    counterNum.textContent = `${x++}`;
+// pauseBtn.addEventListener("click", () => {
+//   clearInterval(timerID);
+//   startBtn.removeAttribute("disabled");
+// });
+
+// resetBtn.addEventListener("click", () => {
+//   x = 0;
+//   counterNum.textContent = x;
+//   clearInterval(timerID);
+//   startBtn.removeAttribute("disabled");
+// });
+
+// ===============Callback. callback hell ==================
+
+// setTimeout(() => {
+//   console.log("Step 1");
+//   setTimeout(() => {
+//     console.log("Step 2");
+//     setTimeout(() => {
+//       console.log("Step 3");
+//     }, 1000);
+//   }, 1500);
+// }, 2000);
+
+function chackRooms(success, failed) {
+  setTimeout(() => {
+    console.log("Проверяем номера в ателе...");
+    const availableRooms = true;
+    if (availableRooms) {
+      let message = "Номера есть";
+      success(message);
+    } else {
+      let message = "Номера закончились";
+      failed(message);
+    }
   }, 1000);
-  startBtn.setAttribute("disabled", "");
-});
+}
 
-pauseBtn.addEventListener("click", function () {
-  clearInterval(timerID);
-  startBtn.removeAttribute("disabled");
-});
+function checkTickets(message, success, failed) {
+  setTimeout(function () {
+    console.log("----- function checkTickets -----");
+    console.log("Ответ на предыдущем шаге", message);
+    console.log("Проверяем авиабилеты...");
+    const availableTuckets = true;
+    if (availableTuckets) {
+      let message = "Билеты есть";
+      success(message);
+    } else {
+      let message = "Билеты закончились";
+      failed(message);
+    }
+  }, 500);
+}
 
-resetBtn.addEventListener("click", function () {
-  x = 0;
-  clearInterval(timerID);
-  counterNum.textContent = x;
-  startBtn.removeAttribute("disabled");
-});
+chackRooms(
+  function (messageFromCheckRooms) {
+    checkTickets(
+      messageFromCheckRooms,
+      function (messageFromCheckRooms) {
+        submitVacation(messageFromCheckRooms);
+      },
+      function (messageFromCheckRooms) {
+        submitVacation(messageFromCheckRooms);
+      }
+    );
+  },
+  function (messageFromCheckRooms) {
+    cancelVacation(messageFromCheckRooms);
+  }
+);
+
+function cancelVacation(message) {
+  console.log("----- camcelVacation ------");
+  console.log("Ответ на предыдущем шаге", message);
+  console.log("Отпуск отменяется :(");
+}
+
+function submitVacation(message) {
+  console.log("----- submitVacation ----");
+  console.log("Ответ на предыдущем шаге", message);
+  console.log("Едем в отпуск :) ");
+}
+
+function x(callFunction) {
+  console.log("running x");
+  console.log("calling callFuction");
+  callFunction();
+  console.log("callded function from x");
+}
+
+callFunction();
