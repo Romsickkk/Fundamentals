@@ -136,7 +136,7 @@
 //   todoInput.focus();
 // }
 
-//             ============ setTimeout==================
+//            ================== setTimeout==================
 // let x = 0;
 // function xUp() {
 //   x++;
@@ -147,6 +147,42 @@
 // }, 1);
 // clearInterval(timerID);
 
-// ======== setTimeOut =======
-if (condition) {
-}
+// ======== setInterval + setTimeOut =======
+// const timerID = setInterval(function () {
+//   console.log("SetInterval Worked!");
+// }, 100);
+
+// setTimeout(() => {
+//   clearInterval(timerID);
+// }, 1000);
+
+//         ================= Practis ==============
+const counterNum = document.querySelector("#counter");
+const startBtn = document.querySelector("#start");
+const pauseBtn = document.querySelector("#pause");
+const resetBtn = document.querySelector("#reset");
+let x = 0;
+
+startBtn.addEventListener("click", function () {
+  counterNum.textContent = x;
+
+  timerID = setInterval(function () {
+    () => {
+      x++;
+    };
+    counterNum.textContent = `${x++}`;
+  }, 1000);
+  startBtn.setAttribute("disabled", "");
+});
+
+pauseBtn.addEventListener("click", function () {
+  clearInterval(timerID);
+  startBtn.removeAttribute("disabled");
+});
+
+resetBtn.addEventListener("click", function () {
+  x = 0;
+  clearInterval(timerID);
+  counterNum.textContent = x;
+  startBtn.removeAttribute("disabled");
+});
