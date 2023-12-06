@@ -156,7 +156,7 @@
 //   clearInterval(timerID);
 // }, 1000);
 
-// //         ================= Practis ==============
+//         ================= Practis ==============
 // const counterNum = document.querySelector("#counter");
 // const startBtn = document.querySelector("#start");
 // const pauseBtn = document.querySelector("#pause");
@@ -196,72 +196,225 @@
 //       console.log("Step 3");
 //     }, 1000);
 //   }, 1500);
-// }, 2000);
+//  }, 2000);
+// =============================================
 
-function chackRooms(success, failed) {
-  setTimeout(() => {
-    console.log("Проверяем номера в ателе...");
-    const availableRooms = true;
-    if (availableRooms) {
-      let message = "Номера есть";
-      success(message);
-    } else {
-      let message = "Номера закончились";
-      failed(message);
-    }
-  }, 1000);
+// function chackRooms(success, failed) {
+//   setTimeout(() => {
+//     console.log("Проверяем номера в ателе...");
+//     const availableRooms = true;
+//     if (availableRooms) {
+//       let message = "Номера есть";
+//       success(message);
+//     } else {
+//       let message = "Номера закончились";
+//       failed(message);
+//     }
+//   }, 1000);
+// }
+
+// function checkTickets(message, success, failed) {
+//   setTimeout(function () {
+//     console.log("----- function checkTickets -----");
+//     console.log("Ответ на предыдущем шаге", message);
+//     console.log("Проверяем авиабилеты...");
+//     const availableTuckets = true;
+//     if (availableTuckets) {
+//       let message = "Билеты есть";
+//       success(message);
+//     } else {
+//       let message = "Билеты закончились";
+//       failed(message);
+//     }
+//   }, 500);
+// }
+
+// chackRooms(
+//   function (messageFromCheckRooms) {
+//     checkTickets(
+//       messageFromCheckRooms,
+//       function (messageFromCheckRooms) {
+//         submitVacation(messageFromCheckRooms);
+//       },
+//       function (messageFromCheckRooms) {
+//         submitVacation(messageFromCheckRooms);
+//       }
+//     );
+//   },
+//   function (messageFromCheckRooms) {
+//     cancelVacation(messageFromCheckRooms);
+//   }
+// );
+
+// function cancelVacation(message) {
+//   console.log("----- camcelVacation ------");
+//   console.log("Ответ на предыдущем шаге", message);
+//   console.log("Отпуск отменяется :(");
+// }
+
+// function submitVacation(message) {
+//   console.log("----- submitVacation ----");
+//   console.log("Ответ на предыдущем шаге", message);
+//   console.log("Едем в отпуск :) ");
+// }
+
+// ====================== Создание промиса ===============
+// const myPromise = new Promise((resolve, reject) => {
+//   console.log("Promise created");
+//   setTimeout(function () {
+//     const reponse = true;
+//     if (reponse) {
+//       let message = "SUCCESS";
+//       resolve(message);
+//     } else {
+//       let message = "FAILED";
+//       reject(message);
+//     }
+//   }, 1000);
+// });
+
+// myPromise
+//   .then(function (data) {
+//     return new Promise((resolve, reject) => {
+//       setTimeout(() => {
+//         console.log("Then 1");
+//         console.log(data);
+//         const response = true;
+//         if (response) {
+//           resolve("data from then 1");
+//         } else {
+//           reject("data from then 1");
+//         }
+//       });
+//     }, 1000);
+//   })
+//   .then(function (data) {
+//     setTimeout(() => {
+//       console.log("then 2");
+//       console.log(data);
+//     }, 500);
+//   })
+//   .catch(function (data) {
+//     console.log("catch");
+//     console.log(data);
+//   });
+
+// ============================ Цепочка промисов. Несколько промисов с setTimeout ==============================
+
+// const checkRooms = new Promise(function (resolve, reject) {
+//   setTimeout(function () {
+//     console.log("Проверяем номера в отеле...");
+//     let availableRooms = true;
+//     console.log(availableRooms);
+//     if (availableRooms) {
+//       resolve("Номера есть!");
+//     } else {
+//       reject("Номеров нет.");
+//     }
+//   }, 1500);
+// });
+
+// checkRooms
+//   .then(function (data) {
+//     return new Promise((resolve, reject) => {
+//       setTimeout(() => {
+//         console.log(" ----- then 1.  ----");
+//         console.log("Ответ на предыдущем шаге", data);
+//         console.log("Едем в отпуск :) ");
+//         const availableTuckets = true;
+//         if (availableTuckets) {
+//           let message = "Билеты есть";
+//           resolve(message);
+//         } else {
+//           let message = "Билетов нет";
+//           reject(message);
+//         }
+//       }, 1000);
+//     });
+//   })
+//   .catch(function (data) {
+//     console.log("----catch---");
+//     console.log("Ответ на предыдущем шаге", data);
+//     console.log("Отпуск отменяется :(");
+//   });
+
+//============ Цепочка промисов. Отдельнте функции. Несколько промисов с setTimeout =======
+
+// checkRooms().then(checkTickets).then(success).catch(failed);
+
+// function checkRooms() {
+//   return new Promise(function (resolve, reject) {
+//     setTimeout(function () {
+//       console.log("Проверяем номера в отеле...");
+//       let availableRooms = true;
+//       console.log(availableRooms);
+//       if (availableRooms) {
+//         resolve("Номера есть!");
+//       } else {
+//         reject("Номеров нет.");
+//       }
+//     }, 1500);
+//   });
+// }
+
+// function checkTickets(data) {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       console.log("Ответ на предыдущем шаге", data);
+//       console.log("Проверяем наличие авиабилетов...");
+//       const availableTuckets = true;
+//       if (availableTuckets) {
+//         let message = "Билеты есть";
+//         resolve(message);
+//       } else {
+//         let message = "Билетов нет";
+//         reject(message);
+//       }
+//     }, 1000);
+//   });
+// }
+
+// function success(data) {
+//   console.log(" ----- then 1.  ----");
+//   console.log("Ответ на предыдущем шаге", data);
+//   console.log("Едем в отпуск :) ");
+// }
+
+// function failed(data) {
+//   console.log("----catch---");
+//   console.log("Ответ на предыдущем шаге", data);
+//   console.log("Отпуск отменяется :(");
+// }
+
+//============= Пример fetch с промисами получение данных по API ==============
+//https://www.cbr-xml-daily.ru/daily_json.js
+
+//1. Получение данных с сервера
+// const response = fetch("https://www.cbr-xml-daily.ru/daily_json.js")
+//   .then((data) => {
+//     return data.json();
+//   })
+//   .then((data) => {
+//     console.log(data);
+//   })
+//   .catch("err 401");
+// console.log(response);
+
+async function getCurrencies() {
+  const url = "https://www.cbr-xml-daily.ru/daily_json.js";
+  const response = await fetch(url);
+  const data = await response.json();
+  console.log(data.Valute.USD.Value.toFixed(2));
+  console.log(data.Valute.EUR.Value.toFixed(2));
+
+  const usdRate = data.Valute.USD.Value.toFixed(2);
+  const eurRate = data.Valute.EUR.Value.toFixed(2);
+
+  //2. Отоброзить на странице
+  const usdElement = document.querySelector("#usd");
+  const eurElment = document.querySelector("#eur");
+
+  usdElement.innerText = usdRate;
+  eurElment.innerText = eurRate;
 }
-
-function checkTickets(message, success, failed) {
-  setTimeout(function () {
-    console.log("----- function checkTickets -----");
-    console.log("Ответ на предыдущем шаге", message);
-    console.log("Проверяем авиабилеты...");
-    const availableTuckets = true;
-    if (availableTuckets) {
-      let message = "Билеты есть";
-      success(message);
-    } else {
-      let message = "Билеты закончились";
-      failed(message);
-    }
-  }, 500);
-}
-
-chackRooms(
-  function (messageFromCheckRooms) {
-    checkTickets(
-      messageFromCheckRooms,
-      function (messageFromCheckRooms) {
-        submitVacation(messageFromCheckRooms);
-      },
-      function (messageFromCheckRooms) {
-        submitVacation(messageFromCheckRooms);
-      }
-    );
-  },
-  function (messageFromCheckRooms) {
-    cancelVacation(messageFromCheckRooms);
-  }
-);
-
-function cancelVacation(message) {
-  console.log("----- camcelVacation ------");
-  console.log("Ответ на предыдущем шаге", message);
-  console.log("Отпуск отменяется :(");
-}
-
-function submitVacation(message) {
-  console.log("----- submitVacation ----");
-  console.log("Ответ на предыдущем шаге", message);
-  console.log("Едем в отпуск :) ");
-}
-
-function x(callFunction) {
-  console.log("running x");
-  console.log("calling callFuction");
-  callFunction();
-  console.log("callded function from x");
-}
-
-callFunction();
+console.log(getCurrencies());
